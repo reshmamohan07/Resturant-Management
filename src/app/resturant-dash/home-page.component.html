@@ -1,0 +1,172 @@
+<div class="jumbotron">
+  <h1 class="display-4">Resturant Record Management!</h1>
+  <p class="lead">You Can Save The Resturant Data Using This Project.</p>
+  <hr class="my-4" />
+  <form class="example-form">
+    <div class="d-flex justify-content-end">
+      <mat-form-field class="w-25" appearance="outline">
+        <mat-label>Search For Resturant</mat-label>
+        <input
+          type="text"
+          placeholder="Select Resturant"
+          matInput
+          [formControl]="myControl"
+          autocomplete="off"
+        />
+        <mat-icon  matPrefix>search</mat-icon>
+      </mat-form-field>
+    </div>
+  </form>
+</div>
+
+<div class="d-flex justify-content-center" *ngIf="loading">
+  <mat-spinner [diameter]="40"></mat-spinner>
+</div>
+<!-- <Table Start Here> -->
+<ng-container *ngIf="{ restaurants: restaurants$ | async } as data">
+  <div class="px-5">
+    <table class="table mt-4" *ngIf="!loading">
+      <thead>
+        <tr>
+          <th scope="col col-md-1">Resturant Id</th>
+          <th scope="col col-md-1">Name</th>
+          <th scope="col col-md-2">Address</th>
+          <th scope="col col-md-1">Email id</th>
+          <th scope="col col-md-2">Mobile</th>
+          <th scope="col col-md-2">Service</th>
+          <th scope="col col-md-3">Action</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <tr *ngFor="let restaurant of data.restaurants">
+          <td class="col-md-1">{{ restaurant.id }}</td>
+          <td class="col-md-1">{{ restaurant.name }}</td>
+          <td class="col-md-2">{{ restaurant.address }}</td>
+          <td class="col-md-1">{{ restaurant.email }}</td>
+          <td class="col-md-2">{{ restaurant.mobile }}</td>
+          <td class="col-md-2">{{ restaurant.service }}</td>
+          <td class="col-md-3">
+            <button
+              type="button"
+              class="btn-success me-5"
+              data-bs-target="#exampleModal"
+              data-bs-toggle="modal"
+              (click)="editResturant(restaurant, restModal)"
+            >
+              Edit</button
+            >&nbsp;&nbsp;
+            <button
+              type="button"
+              class="btn-danger me-5"
+              (click)="deleteResturant(restaurant)"
+            >
+              Delete
+            </button>
+            <!-- menu for resturants -->
+            <a routerLink="/menu/{{ restaurant.id }}"
+              ><mat-icon class="menu-icon">restaurant_menu</mat-icon></a
+            >
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</ng-container>
+<!-- Modal -->
+<ng-template #restModal let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">
+      Resturant Data Form!!!....
+    </h4>
+    <button
+      type="button"
+      class="btn-close"
+      aria-label="Close"
+      (click)="modal.dismiss('Cross click')"
+    ></button>
+  </div>
+  <div class="modal-body">
+    <form [formGroup]="formValue">
+      <div class="mb-3">
+        <label class="form-label">Name</label>
+        <input
+          type="text"
+          class="form-control"
+          id="name"
+          formControlName="name"
+          placeholder="Resturant name here!"
+        />
+      </div>
+      <div class="mb-3">
+        <label class="form-label">Address</label>
+        <input
+          type="text"
+          class="form-control"
+          formControlName="address"
+          placeholder="Address here!"
+          id="address"
+        />
+      </div>
+      <div class="mb-3">
+        <label class="form-label">Email</label>
+        <input
+          type="email"
+          class="form-control"
+          formControlName="email"
+          placeholder="Email here!"
+          id="email"
+        />
+        <div id="emailHelp" class="form-text">
+          We'll never share your email with anyone else.
+        </div>
+      </div>
+      <div class="mb-3">
+        <label class="form-label">Mobile</label>
+        <input
+          type="text"
+          class="form-control"
+          formControlName="mobile"
+          placeholder="Mobile number here!"
+          id="mobile"
+        />
+      </div>
+      <div class="mb-3">
+        <label class="form-label">Service</label>
+        <input
+          type="text"
+          class="form-control"
+          formControlName="service"
+          placeholder="Service!"
+          id="service"
+        />
+      </div>
+      <div class="modal-footer">
+        <button
+          type="button"
+          class="btn btn-outline-dark"
+          (click)="modal.close('Close click')"
+        >
+          Close
+        </button>
+        <button
+          type="button"
+          *ngIf="showAdd"
+          class="btn btn-primary"
+          (click)="addRestaurant()"
+        >
+          Add Details
+        </button>
+        <button
+          type="button"
+          *ngIf="showbtn"
+          class="btn btn-primary"
+          (click)="updateResturant1()"
+        >
+          Update Details
+        </button>
+      </div>
+    </form>
+  </div>
+</ng-template>
+
