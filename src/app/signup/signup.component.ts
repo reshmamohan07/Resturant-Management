@@ -61,7 +61,8 @@ export class SignupComponent implements OnInit {
 
   isValidEmailId(emailId: string) {
     this.commonService.isEmailExist(emailId).subscribe((data) => {
-      console.log(data);
+      console.log("Email id exists: ", data);
+      console.log("Email id exists1: ", data);
     });
   }
   // err=>{
